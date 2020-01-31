@@ -45,7 +45,7 @@ Route::get('scrape_sg_news', function () {
 				'content' => $article['content'],
 				'urlToImage' => $article['urlToImage'],
 				'publishedAt' => gmdate('Y-m-d H:i:s', strtotime($article['publishedAt'])), 
-				'addedOn' => gmdate('Y-m-d g:i:s'), 
+				'addedOn' => gmdate('Y-m-d H:i:s'), 
 				'siteName' => $article['source']['name'], 
 				'language' => 'en', 
 			);
