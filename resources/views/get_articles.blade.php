@@ -11,7 +11,7 @@
                     <table>
                         <tr>
                            <th width="10%">Id</th>
-                           <th width="60%">Title</th>
+                           <th width="80%">Title</th>
                            <th>Status</th>
                          </tr>
 
@@ -26,7 +26,7 @@
                                 }
                                 else
                                 {
-                                    $status = 'Disabled';
+                                    $status = '<div style="color:red;">Disabled</div>';
                                 }
                             ?>
                             <td><?php echo $status ?></td>

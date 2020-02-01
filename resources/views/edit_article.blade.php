@@ -8,7 +8,12 @@
                 <div class="card-header"></div>
 
                 <div class="card-body">
-                    <form action='/update_article' method='post'>
+                    @if(Session::has('success'))
+                    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('success') }}</p>
+                    @endif
+                    <form method="post" action="{{ route('articles.update', $article->nid) }}">
+                    @method('PUT')
+                    @csrf
                     <table>
                         <tr>
                            <th width="20%"></th>
@@ -43,7 +48,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td></td>
+                            <td><a href="/get_articles">Back</a></td>
                             <td><button type="submit" class="btn btn-primary">
                                     Update
                                 </button>

@@ -40,8 +40,11 @@ class HomeController extends Controller
         return \View::make('edit_article', ['article' => $article]);
     }
 
-    public function update_article(Request $request)
+    public function update_article(Request $request, $id)
     {
-        dd($request->all());
+        $article = \DB::table('newsapi_n')->where('nid', $id)
+        ->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Article updated');
     }
 }

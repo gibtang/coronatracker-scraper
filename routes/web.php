@@ -85,4 +85,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/get_articles', 'HomeController@get_articles');//->name('home');
 Route::get('/edit_article/{id}', 'HomeController@edit_article');
-Route::post('/update_article', 'HomeController@update_article');
+Route::put('/update_article/{id}', 'HomeController@update_article')->name('articles.update');
