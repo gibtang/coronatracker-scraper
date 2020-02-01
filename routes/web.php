@@ -73,3 +73,16 @@ Route::get('scrape_sg_news', function () {
     //$current_rows = \DB::table('newsapi')->get()->toArray();
 	return $scrape_response;
 });
+
+// route to show the login form
+Route::get('login', array('uses' => 'HomeController@showLogin'));
+
+// route to process the form
+Route::post('login', array('uses' => 'HomeController@doLogin'));
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/get_articles', 'HomeController@get_articles');//->name('home');
+Route::get('/edit_article/{id}', 'HomeController@edit_article');
+Route::post('/update_article', 'HomeController@update_article');
