@@ -28,9 +28,10 @@ class HomeController extends Controller
 
     public function get_articles()
     {
-        $all_articles = \DB::table('newsapi_n')->get()->toArray();
+        $all_articles = \DB::table('newsapi_n')->orderBy('addedOn', 'DESC')->paginate(10);
 
         //return view('get_articles')->with('all_articles');
+        //dd($all_articles);
         return \View::make('get_articles', ['all_articles' => $all_articles]);//view("get_articles", compact("all_articles"));
     }
 
