@@ -3,17 +3,17 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header"></div>
 
                 <div class="card-body">
                     <table>
                         <tr>
-                           <th width="3%">Id</th>
-                           <th width="80%">Title</th>
+                           <th width="5%">Id</th>
+                           <th>Title</th>
                            <th width="12%">Date Added</th>
-                           <th>Status</th>
+                           <th width="8%">Status</th>
                          </tr>
                     <?php $idx = 1; ?>
                     @foreach($all_articles as $article)
