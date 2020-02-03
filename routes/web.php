@@ -86,3 +86,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/get_articles', 'HomeController@get_articles');//->name('home');
 Route::get('/edit_article/{id}', 'HomeController@edit_article');
 Route::put('/update_article/{id}', 'HomeController@update_article')->name('articles.update');
+Route::post('/search_article', array('uses' => 'HomeController@search_article'));

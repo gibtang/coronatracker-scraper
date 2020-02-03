@@ -35,6 +35,18 @@ class HomeController extends Controller
         return \View::make('get_articles', ['all_articles' => $all_articles]);//view("get_articles", compact("all_articles"));
     }
 
+    public function search_article(Request $request)
+    {
+        $keyword = $request->search;
+        $all_articles = \DB::table('newsapi_n')
+        ->orWhere('title', 'LIKE', '%'.$keyword.'%')
+        //->orWhere('description', 'LIKE', '%'.$keyword.'%')
+        //->orWhere('url', 'LIKE', '%'.$keyword.'%')
+        ->orderBy('addedOn', 'DESC')->paginate(10);
+
+        return \View::make('get_articles', ['all_articles' => $all_articles]);
+    }
+
     public function edit_article($id)
     {
         $article = \DB::table('newsapi_n')->where('nid', $id)->first();
