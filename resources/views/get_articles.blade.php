@@ -10,7 +10,7 @@
                     @csrf
                         <input type="text" name="search">
                         <button type="submit" class="btn btn-primary">
-                            Search
+                            Search by Title
                         </button>
                     </form>
                     <a href="/get_articles">View All Articles</a>
