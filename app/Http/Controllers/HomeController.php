@@ -36,7 +36,7 @@ class HomeController extends Controller
     }
 
     public function search_article(Request $request)
-    {
+    {   
         $keyword = $request->search;
         $all_articles = \DB::table('newsapi_n')
         ->orWhere('title', 'LIKE', '%'.$keyword.'%')

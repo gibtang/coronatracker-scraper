@@ -6,8 +6,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <form method="post" action="{{ action('HomeController@search_article') }}">
-                    @csrf
+                    <form method="get" action="{{ action('HomeController@search_article') }}">
                         <input type="text" name="search">
                         <button type="submit" class="btn btn-primary">
                             Search by Title
