@@ -79,7 +79,7 @@ Route::get('scrape_sg_news', function () {
 		$scrape_response['articles'] = $articles;
 	}
 	catch(Exception $e) {
-	  	$scraper_status->status_code = 'error';
+	  	$scraper_status->status_code = $e->getMessage();
 	}
 
 	$scraper_status->number_of_articles_crawled = count($articles);
