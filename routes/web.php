@@ -36,7 +36,7 @@ Route::get('scrape_sg_news', function () {
     $update = 0;
 	foreach($articles as $article)
 	{
-		$existing_article = (Array) \DB::table($table)->where('url', $article['url'])->first();
+		$existing_article = (Array) \DB::table($table)->where('title', $article['title'])->first();
 		$data = array(
 				'title' => $article['title'], 
 				'description' => $article['description'], 
@@ -70,6 +70,14 @@ Route::get('scrape_sg_news', function () {
 	$scrape_response['inserted_articles'] = $insert;
 	$scrape_response['updated_articles'] = $update;
 	$scrape_response['articles'] = $articles;
+
+	$scraper_status = new \App\ScraperStatus;
+	$scraper_status->source_url = $url;
+	$scraper_status->description = "Get from API all news for country Singapore and with keyword 'corona'. http://54.251.169.120/scrape_sg_news will call this API https://newsapi.org/v2/top-headlines?q=corona&country=sg&apiKey=2188be1bbdde4d16b2a536861d012433 to scrape the news";
+	$scraper_status->status_code = 'ok';
+	$scraper_status->number_of_articles_crawled = count($articles);
+	$scraper_status->number_of_articles_inserted = $insert;
+	$scraper_status->save();
     //$current_rows = \DB::table('newsapi')->get()->toArray();
 	return $scrape_response;
 });
