@@ -13,6 +13,7 @@
                         </button>
                     </form>
                     <a href="/get_articles">View All Articles</a>
+                    <div><a href="/home">Back</a></div>
                 </div>
 
                 <div class="card-body">

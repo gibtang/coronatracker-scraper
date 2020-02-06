@@ -7,6 +7,8 @@
             <div class="card">
                 <div class="card-header"><a href="/get_articles">Click here to view articles</a></div>
 
+                <div class="card-header"><a href="/get_scraper_statuses">Click here to view scraper statuses</a></div>
+
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success">

@@ -28,7 +28,7 @@ class HomeController extends Controller
 
     public function get_articles()
     {
-        $all_articles = \DB::table('newsapi_n')->orderBy('addedOn', 'DESC')->paginate(10);
+        $all_articles = \DB::table('newsapi_n')->orderBy('addedOn', 'DESC')->paginate(15);
 
         //return view('get_articles')->with('all_articles');
         //dd($all_articles);
@@ -59,5 +59,12 @@ class HomeController extends Controller
         ->update(['status' => $request->status]);
 
         return redirect()->back()->with('success', 'Article updated');
+    }
+
+    public function get_scraper_statuses()
+    {
+        $all_scraper_statuses = \App\ScraperStatus::orderBy('id', 'DESC')->paginate(15);
+        return \View::make('all_scraper_statuses', ['all_scraper_statuses' => $all_scraper_statuses]);
+        //return $all_scraper_statuses;
     }
 }
