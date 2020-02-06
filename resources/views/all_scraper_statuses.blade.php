@@ -21,7 +21,7 @@
                            <th width="5%">Id</th>
                            <th>Source URL</th>
                            <th width="12%">Date Added</th>
-                           <th width="12%">Articles Added</th>
+                           <th width="12%">Articles Crawled</th>
                            <th width="12%">Articles Inserted</th>
                            <th width="8%">Status Code</th>
                          </tr>

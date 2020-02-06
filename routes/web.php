@@ -18,63 +18,70 @@ Route::get('/', function () {
 Route::get('scrape_sg_news', function () {
     $url = "curl \"https://newsapi.org/v2/top-headlines?q=corona&country=sg&apiKey=2188be1bbdde4d16b2a536861d012433\"";
 
-    $response = shell_exec($url);
-    $array = json_decode($response, true);
-
-    if ($array['status'] == 'ok')
-    {
-    	\Log::info($url . ' scraping ok');
-    }
-    else
-    {
-    	\Log::info($url . ' scraping has errors');
-    }
-    $articles = $array['articles'];
-    $table = 'newsapi_n';
-    
-    $insert = 0;
-    $update = 0;
-	foreach($articles as $article)
-	{
-		$existing_article = (Array) \DB::table($table)->where('title', $article['title'])->first();
-		$data = array(
-				'title' => $article['title'], 
-				'description' => $article['description'], 
-				'author' => $article['author'], 
-				'url' => $article['url'], 
-				'content' => $article['content'],
-				'urlToImage' => $article['urlToImage'],
-				'publishedAt' => gmdate('Y-m-d H:i:s', strtotime($article['publishedAt'])), 
-				'addedOn' => gmdate('Y-m-d H:i:s'), 
-				'siteName' => $article['source']['name'], 
-				'language' => 'en', 
-			);
-		if (count($existing_article) == 0)
-		{
-			\DB::table($table)->insert(
-			    $data
-			);
-			$insert++;
-			\Log::info($data);
-			\Log::info('stored into DB');
-		}
-		else
-		{
-			\DB::table($table)->where('nid', $existing_article['nid'])->update(
-			    $data
-			);
-			$update++;
-			\Log::info($article['url'] . ' already exists in database');
-		}
-	}
-	$scrape_response['inserted_articles'] = $insert;
-	$scrape_response['updated_articles'] = $update;
-	$scrape_response['articles'] = $articles;
-
 	$scraper_status = new \App\ScraperStatus;
 	$scraper_status->source_url = $url;
 	$scraper_status->description = "Get from API all news for country Singapore and with keyword 'corona'. http://54.251.169.120/scrape_sg_news will call this API https://newsapi.org/v2/top-headlines?q=corona&country=sg&apiKey=2188be1bbdde4d16b2a536861d012433 to scrape the news";
-	$scraper_status->status_code = 'ok';
+	$insert = 0;
+	$update = 0;
+	$articles = array();
+	try
+	{
+	    $response = shell_exec($url);
+	    $array = json_decode($response, true);
+
+	    if ($array['status'] == 'ok')
+	    {
+	    	\Log::info($url . ' scraping ok');
+	    }
+	    else
+	    {
+	    	\Log::info($url . ' scraping has errors');
+	    }
+	    $articles = $array['articles'];
+	    $table = 'newsapi_n';
+	    
+		foreach($articles as $article)
+		{
+			$existing_article = (Array) \DB::table($table)->where('title', $article['title'])->first();
+			$data = array(
+					'title' => $article['title'], 
+					'description' => $article['description'], 
+					'author' => $article['author'], 
+					'url' => $article['url'], 
+					'content' => $article['content'],
+					'urlToImage' => $article['urlToImage'],
+					'publishedAt' => gmdate('Y-m-d H:i:s', strtotime($article['publishedAt'])), 
+					'addedOn' => gmdate('Y-m-d H:i:s'), 
+					'siteName' => $article['source']['name'], 
+					'language' => 'en', 
+				);
+			if (count($existing_article) == 0)
+			{
+				\DB::table($table)->insert(
+				    $data
+				);
+				$insert++;
+				\Log::info($data);
+				\Log::info('stored into DB');
+			}
+			else
+			{
+				\DB::table($table)->where('nid', $existing_article['nid'])->update(
+				    $data
+				);
+				$update++;
+				\Log::info($article['url'] . ' already exists in database');
+			}
+		}
+		$scraper_status->status_code = 'ok';
+		$scrape_response['inserted_articles'] = $insert;
+		$scrape_response['updated_articles'] = $update;
+		$scrape_response['articles'] = $articles;
+	}
+	catch(Exception $e) {
+	  	$scraper_status->status_code = 'error';
+	}
+
 	$scraper_status->number_of_articles_crawled = count($articles);
 	$scraper_status->number_of_articles_inserted = $insert;
 	$scraper_status->save();
