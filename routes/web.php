@@ -39,10 +39,11 @@ Route::get('scrape_sg_news', function () {
 	    }
 	    $articles = $array['articles'];
 	    $table = 'newsapi_n';
-	    
+		
+		$scrape_response = array();
 		foreach($articles as $article)
 		{
-			$existing_article = (Array) \DB::table($table)->where('title', $article['title'])->first();
+			$existing_article = (Array) \DB::table($table)->where('title', $article['title'])->orWhere('url', $article['url'])->first();
 			$data = array(
 					'title' => $article['title'], 
 					'description' => $article['description'], 
@@ -80,7 +81,11 @@ Route::get('scrape_sg_news', function () {
 		$scrape_response['articles'] = $articles;
 	}
 	catch(Exception $e) {
-	  	$scraper_status->status_code = $e->getMessage();
+		\Log::info('scrape_sg_news error');
+		$error_msg = $e->getMessage();
+		\Log::info($error_msg);
+		$scraper_status->status_code = '500';
+		$scrape_response['error'] = $error_msg;
 	}
 
 	$scraper_status->number_of_articles_crawled = count($articles);
@@ -116,7 +121,7 @@ Route::get('scrape_wuflu', function () {
 		$data->deaths = $deaths;
 		$data->recovered = $recovered;
 		$data->datetime_string = $datetime_string;
-		//$data->save();
+		$data->save();
 		$wuflu_countries[$country_name] = $country;
 		//array_push($countries, $country);
 	}
