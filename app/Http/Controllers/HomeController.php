@@ -26,6 +26,27 @@ class HomeController extends Controller
         return view('home');
     }
 
+    public static function getCountryCode($country_name)
+    {
+
+		if ($country_name == 'Russia'){
+			$country_name = 'Russian Federation';
+		}
+		if ($country_name == 'Mainland China'){
+			$country_name = 'China';
+		}
+		if ($country_name == 'US'){
+			$country_name = 'United States';
+		}
+		if ($country_name == 'UK'){
+			$country_name = 'United Kingdom';
+		}
+		if ($country_name == 'South Korea'){
+			$country_name = 'Korea, Republic of';
+        }
+        return $country_name;
+    }
+
     public function get_articles()
     {
         $all_articles = \DB::table('newsapi_n')->orderBy('addedOn', 'DESC')->paginate(15);

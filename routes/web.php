@@ -116,7 +116,7 @@ Route::get('scrape_wuflu', function () {
 		$data->deaths = $deaths;
 		$data->recovered = $recovered;
 		$data->datetime_string = $datetime_string;
-		$data->save();
+		//$data->save();
 		$wuflu_countries[$country_name] = $country;
 		//array_push($countries, $country);
 	}
@@ -162,10 +162,15 @@ Route::get('scrape_wuflu', function () {
 			$aggregated_recovered = $arcgis_country['recovered'];
 			$source_recovered = 'arcgis';
 		}
+		$country_name = App\Http\Controllers\HomeController::getCountryCode($country_name);
+	
+		$country_code = \App\Country::where('countryName', $country_name)->pluck('countryCode')->first();
+		$country_code = strtolower($country_code);
 
-		$aggregated_countries[$country_name] = array('aggregated_deaths' => $aggregated_deaths, 'source_deaths' => $source_deaths, 'aggregated_recovered' => $aggregated_recovered, 'source_recovered' => $source_recovered, 'aggregated_confirmed' => $aggregated_confirmed, 'source_confirmed' => $source_confirmed, 'posted_at' => $posted_at);
+		$aggregated_countries[$country_name] = array('aggregated_deaths' => $aggregated_deaths, 'source_deaths' => $source_deaths, 'aggregated_recovered' => $aggregated_recovered, 'source_recovered' => $source_recovered, 'aggregated_confirmed' => $aggregated_confirmed, 'source_confirmed' => $source_confirmed, 'posted_at' => $posted_at, 'country_code' => $country_code);
 
 		$data_aggregated = new \App\DataAggregated;
+		$data_aggregated->countryCode = $country_code;
 		$data_aggregated->deaths = $aggregated_deaths;
 		$data_aggregated->source_deaths = $source_deaths;
 		$data_aggregated->recovered = $aggregated_recovered;
